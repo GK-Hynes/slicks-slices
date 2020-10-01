@@ -1,3 +1,4 @@
+import { graphql } from "gatsby";
 import path from "path";
 
 async function turnPizzasIntoPages({ graphql, actions }) {
@@ -29,10 +30,40 @@ async function turnPizzasIntoPages({ graphql, actions }) {
   });
 }
 
+async function turnToppingsIntoPages({ graphql, actions }) {
+  // Get template
+  const toppingsTemplate = path.resolve("./src/pages/pizzas.js");
+  const { data } = await graphql(`
+    query {
+      toppings: allSanityTopping {
+        nodes {
+          name
+          id
+        }
+      }
+    }
+  `);
+
+  data.toppings.nodes.forEach((topping) => {
+    actions.createPage({
+      path: `topping/${topping.name}`,
+      component: toppingsTemplate,
+      context: {
+        topping: topping.name,
+        toppingRegex: `/${topping.name}/i`
+      }
+    });
+  });
+}
+
 export async function createPages(params) {
   // create pages dynamically
   // 1. Pizzas
-  await turnPizzasIntoPages(params);
   // 2. Toppings
   // 3. Slicemasters
+  // Wait for all promises to be resolved
+  await Promise.all([
+    turnPizzasIntoPages(params),
+    turnToppingsIntoPages(params)
+  ]);
 }
