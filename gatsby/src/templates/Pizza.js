@@ -12,17 +12,20 @@ const PizzaGrid = styled.div`
 export default function SinglePizzaPage({ data }) {
   const { pizza } = data;
   return (
-    <PizzaGrid>
-      <Img fluid={pizza.image.asset.fluid} />
-      <div>
-        <h2 className="mark">{pizza.name}</h2>
-        <ul>
-          {pizza.toppings.map((topping) => (
-            <li key={topping.id}>{topping.name}</li>
-          ))}
-        </ul>
-      </div>
-    </PizzaGrid>
+    <>
+      <SEO title={pizza.name} image={pizza.image?.asset?.fluid?.src} />
+      <PizzaGrid>
+        <Img fluid={pizza.image.asset.fluid} />
+        <div>
+          <h2 className="mark">{pizza.name}</h2>
+          <ul>
+            {pizza.toppings.map((topping) => (
+              <li key={topping.id}>{topping.name}</li>
+            ))}
+          </ul>
+        </div>
+      </PizzaGrid>
+    </>
   );
 }
 
