@@ -3,6 +3,9 @@ import OrderContext from "../components/OrderContext";
 
 export default function usePizza({ pizzas, inputs }) {
   const [order, setOrder] = useContext(OrderContext);
+  const [error, setError] = useState();
+  const [loading, setLoading] = useState(false);
+  const [message, setMessage] = useState("");
 
   function addToOrder(orderedPizza) {
     setOrder([...order, orderedPizza]);
@@ -17,6 +20,9 @@ export default function usePizza({ pizzas, inputs }) {
   return {
     order,
     addToOrder,
-    removeFromOrder
+    removeFromOrder,
+    error,
+    loading,
+    message
   };
 }

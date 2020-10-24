@@ -4,8 +4,9 @@ import Img from "gatsby-image";
 import SEO from "../components/SEO";
 import useForm from "../utils/useForm";
 import usePizza from "../utils/usePizza";
-import calculatePizzaPrice from "../utils/calculatePizzaPrice";
 import formatMoney from "../utils/formatMoney";
+import calculatePizzaPrice from "../utils/calculatePizzaPrice";
+import calculateOrderTotal from "../utils/calculateOrderTotal";
 import OrderStyles from "../styles/OrderStyles";
 import MenuItemStyles from "../styles/MenuItemStyles";
 import PizzaOrder from "../components/PizzaOrder";
@@ -18,7 +19,14 @@ export default function OrderPage({ data }) {
     email: ""
   });
 
-  const { order, addToOrder, removeFromOrder } = usePizza({
+  const {
+    order,
+    addToOrder,
+    removeFromOrder,
+    error,
+    loading,
+    message
+  } = usePizza({
     pizzas,
     inputs: values
   });
@@ -85,6 +93,10 @@ export default function OrderPage({ data }) {
             removeFromOrder={removeFromOrder}
             pizzas={pizzas}
           />
+        </fieldset>
+        <fieldset>
+          <h3>Total is {formatMoney(calculateOrderTotal(order, pizzas))}</h3>
+          <button type="submit">Order Ahead</button>
         </fieldset>
       </OrderStyles>
     </>
