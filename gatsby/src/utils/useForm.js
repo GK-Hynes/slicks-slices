@@ -3,9 +3,9 @@ import { useState } from "react";
 export default function useForm(defaults) {
   const [values, setValues] = useState(defaults);
 
-  function updateValues(e) {
+  function updateValue(e) {
     // check it it's a number and convert
-    let { value } = e.taregt.value;
+    let { value } = e.target;
     if (e.target.type === "number") {
       value = parseInt(value);
     }
@@ -18,5 +18,5 @@ export default function useForm(defaults) {
     });
   }
 
-  return { values, updateValues };
+  return { values, updateValue };
 }
