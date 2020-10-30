@@ -27,7 +27,8 @@ export default function usePizza({ pizzas, values }) {
       order: attachNamesAndPrices(order, pizzas),
       total: formatMoney(calculateOrderTotal(order, pizzas)),
       name: values.name,
-      email: values.email
+      email: values.email,
+      mapleSyrup: values.mapleSyrup
     };
 
     const res = await fetch(
