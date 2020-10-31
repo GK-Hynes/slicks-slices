@@ -1,5 +1,22 @@
 import { useState, useEffect } from "react";
 
+// Fake graphql library for formatting and syntax highlighting
+const gql = String.raw;
+
+// Quasi-fragment for fetching same data from slicemasters and hotSlices
+const deets = `
+    name
+    _id
+    image {
+      asset {
+        url
+        metadata {
+          lqip
+        }
+      }
+    }
+`;
+
 export default function useLatestData() {
   // hot slices
   const [hotSlices, setHotSlices] = useState();
@@ -14,18 +31,18 @@ export default function useLatestData() {
         "Content-Type": "application/json"
       },
       body: JSON.stringify({
-        query: `
+        query: gql`
           query {
-  StoreSettings(id: "downtown") {
-    name
-    slicemaster {
-      name
-    }
-    hotSlices {
-      name
-    }
-  }
-}
+            StoreSettings(id: "downtown") {
+              name
+              slicemaster {
+                ${deets}
+              }
+              hotSlices {
+                ${deets}
+              }
+            }
+          }
         `
       })
     })
@@ -34,7 +51,11 @@ export default function useLatestData() {
         // TODO Check for errors
         // Set the data to state
         setHotSlices(res.data.StoreSettings.hotSlices);
-        setSlicemasters(res.data.StoreSettings.slicemasters);
+        setSlicemasters(res.data.StoreSettings.slicemaster);
+      })
+      .catch((err) => {
+        console.log("SHOOOOT");
+        console.log(err);
       });
   }, []);
   return {
